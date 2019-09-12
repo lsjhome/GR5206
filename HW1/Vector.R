@@ -38,7 +38,5 @@ for (i in 1:length(v1))
   }
 }
 
-names(v2) <- ifelse(v2%%2 == 0, "even", "odd")
-
 ## Do not modify this line! ## Write your code for 4. after this line! ##
 v4 = mean(v3, na.rm = TRUE)
