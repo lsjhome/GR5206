@@ -10,9 +10,15 @@
 ## Do not modify this line! ## Write your code for 1. after this line! ##
 a <- matrix(1:9, 3, 3, byrow = TRUE)
 ## Do not modify this line! ## Write your code for 2. after this line! ##
-chol(a)
+Q <- chol(a, pivot = TRUE)
+pivot <- attr(Q, "pivot")
+ca <- Q[, order(pivot)]
+
 ## Do not modify this line! ## Write your code for 3. after this line! ##
+eva <- eigen(a)$vectors[, 1]
 
 ## Do not modify this line! ## Write your code for 4. after this line! ##
+iea <- solve(eigen(a)$vectors)
 
 ## Do not modify this line! ## Write your code for 5. after this line! ##
+ra <- qr(a)$rank
