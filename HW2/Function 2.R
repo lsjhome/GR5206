@@ -58,8 +58,4 @@ f4 <- function(v, a){
   }
   return (F)
 }
-  
-  
-  
-  
-}
+
