@@ -13,10 +13,21 @@ NULL
 
 ## Do not modify this line! ## Write your code for 1. after this line! ##
 
+v <- c(1:25)
+
 ## Do not modify this line! ## Write your code for 2. after this line! ##
+
+m <- matrix(v, 5, 5, byrow =T)
 
 ## Do not modify this line! ## Write your code for 3. after this line! ##
 
+f <- function(x) mean(x)^2
+
 ## Do not modify this line! ## Write your code for 4. after this line! ##
 
+m_row_sum <- apply(m, 1, FUN = sum)
+
 ## Do not modify this line! ## Write your code for 5. after this line! ##
+
+rm(f)
+m_col <- apply(m, 2, function(x) mean(x)^2)
