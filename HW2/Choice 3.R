@@ -22,10 +22,31 @@ n<- sum(!r)
 
 ## Do not modify this line! ## Write your code for 4. after this line! ##
 
-ifelse(x<20, -1, ifelse(20<=x<=50, 0, 1))
+y <- NULL
+for (i in x){
+  if (i<20)
+  {
+    y[i]<- -1
+  }
+  
+  else if (20<=i & i<=50){
+    y[i] <- 0
+  }
+  
+  else if (51<=i & i<=80){
+    y[i] <- 1
+  }
+  
+  else
+    y[i] <- NA
+}
 
 
 ## Do not modify this line! ## Write your code for 5. after this line! ##
 
+z <- table(y)
+
 ## Do not modify this line! ## Write your code for 6. after this line! ##
+
+num_NA <- sum(is.na(y))
 
