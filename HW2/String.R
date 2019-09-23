@@ -92,8 +92,5 @@ string5 <- function(x, i, j, desc){
     {
       return (paste((temp)[j:i], collapse = ""))
     }
-     
   }
 }
-
-
