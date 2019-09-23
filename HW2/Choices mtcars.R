@@ -46,3 +46,9 @@ new_df$mpg <- case_when(
   gear == 'high gear' ~ m3
 )
 
+new_df <- mtcars
+new_df$mpg <- case_when(
+  gear == 'low gear' ~ m1,
+  gear == 'medium gear' ~ m2,
+  gear == 'high gear' ~ m3
+)
