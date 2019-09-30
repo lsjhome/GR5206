@@ -42,19 +42,24 @@ my_rle <- function(x, f) rle(map_lgl(x, f))
 #'    Note: If f(x) is FALSE for every x in the list, return `NA`.
 ## Do not modify this line!
 
-span <- function(x,f) {
-  rle <- my_rle(x,f)
-  lengths <- rle$lengths
-  logi <- rle$values
-  accum <- accumulate(lengths , `+`)
-  if(!any(logi)) {
-    return(NA)
+span <- function(x, f){
+  rle <- my_rle(x, f)
+  if (!any(rle$values))
+  {
+    return (NA)
   }
-  true_index <- which(logi == TRUE)
-  max_run <- max(lengths[true_index])
-  true_max <- which( lengths[true_index] == max_run )[1]
-  if(which(logi == T)[true_max] == 1){
-    return(1)
+  else {
+    max_length <- max(rle$lengths[rle$values])
+    idx <- detect_index(rle$lengths[rle$values], function(x) x==max_length)
+    idx_until <- which(rle$values==T)[idx]                    
+    if (idx_until == 1)
+    {
+      return (1)
+    }
+    else
+    {
+      output <- sum(rle$lengths[1:(idx_until-1)]) + 1
+      return (output)
+    }
   }
-  return(accum[which(logi == T)[true_max]-1]+1)
 }
