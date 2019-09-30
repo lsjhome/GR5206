@@ -8,8 +8,6 @@
 library(purrr)
 my_factorial <- function(n) ifelse(n <= 1, 1, reduce(as.double(1:n), .f=`*`))
 
-my_factorial(2)
-
 #' 2. Create a function `compare_length(vec1, vec2)` that takes as input 2 vectors and returns the maximum length of them using `max`.
 ## Do not modify this line!
 
@@ -42,6 +40,14 @@ my_rle <- function(x, f) rle(map_lgl(x, f))
 #'    Note: If f(x) is FALSE for every x in the list, return `NA`.
 ## Do not modify this line!
 
+# x <-list("a", "b", 1, 2, 3, "d","e","f", 4, 5, 6, 7)
+# 
+# rle <- my_rle(x, is.character)
+# max_length <- max(rle$lengths[rle$values])
+# detect_index(rle$lengths[rle$values], function(x) x==max_length)
+# idx <- detect_index(rle$lengths[rle$values], function(x) x==max_length)
+# which(rle$values==T)[idx]
+
 span <- function(x, f){
   rle <- my_rle(x, f)
   if (!any(rle$values))
@@ -50,15 +56,15 @@ span <- function(x, f){
   }
   else {
     max_length <- max(rle$lengths[rle$values])
-    idx <- detect_index(rle$lengths[rle$values], function(x) x==max_length)
-    idx_until <- which(rle$values==T)[idx]                    
-    if (idx_until == 1)
+    idx_among_true <- detect_index(rle$lengths[rle$values], function(x) x==max_length)
+    idx_among_total <- which(rle$values==T)[idx_among_true]                    
+    if (idx_among_total == 1)
     {
       return (1)
     }
     else
     {
-      output <- sum(rle$lengths[1:(idx_until-1)]) + 1
+      output <- sum(rle$lengths[1:(idx_among_total-1)]) + 1
       return (output)
     }
   }
