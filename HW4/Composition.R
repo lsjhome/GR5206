@@ -15,6 +15,11 @@
 # Note: the tibble should be named `iris`.
 ## Do not modify this line!
 
+library(purrr)
+library(tibble)
+
+data(iris)
+iris <- as_tibble(iris)
 
 
 # 2. Use `map_dbl` and `compose` from the `purrr` package to return the square root of the number of unique values in
@@ -22,7 +27,8 @@
 # `length` and `unique` functions.
 ## Do not modify this line!
 
-
+compose_uni_len_sqr <- compose(sqrt, length, unique)
+squ_n_unique <- map_dbl(iris, compose_uni_len_sqr)
 
 # 3. Now build your own custom `compose_2` function operator that takes in two inputs `f` and `g` and returns
 # the function `f(g(...))`
@@ -30,6 +36,10 @@
 # sure you use `force()`. You are not allowed to use `compose` from the `purrr` package here.
 ## Do not modify this line!
 
+compose_2 <- function(f, g) {
+  force(c(f, g))
+  return (function(...) f(g(...)))
+}  
 
 
 # 4. Use `compose_2` to build your own custom `compose_3` function operator that takes in three input
@@ -40,12 +50,18 @@
 ## Do not modify this line!
 
 
+compose_3<-function(f, g, h) {
+  force(c(f, g, h))    
+  temp<-compose_2(g, h)
+  return(function(...) f(temp(...)))
+}
 
-# 5. Use `custom_3` and `map_dbl` to replicate the results you obtained using `purrr::compose` in question 2. Assign the result to a
-# variable `squ_n_unique_custom`.
+# 5. Use `custom_3` and `map_dbl` to replicate the results you obtained using `purrr::compose` in question 2. 
+# Assign the result to a variable `squ_n_unique_custom`.
 # Hint: again, use the built-in `sqrt`, `length` and `unique` functions.
 #'
 ## Do not modify this line!
 
 
+squ_n_unique_custom <- map_dbl(iris, compose_3(sqrt, length, unique))
 
