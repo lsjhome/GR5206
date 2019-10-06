@@ -93,4 +93,11 @@ s <- map_dbl(iris, possibly(mean, NA))
 #'
 ## Do not modify this line!
 
-map(iris, quietly(mean))
+y2 <- map(iris, quietly(mean))
+warning_log <- transpose(y2)$warnings
+
+warning_indicator <- function(x) identical(x, character(0))
+is_ok2 <- map_lgl(warning_log, warning_indicator)
+
+s <- warning_log[!is_ok2]
+warning <- flatten_chr(s)
