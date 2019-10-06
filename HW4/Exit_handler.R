@@ -68,18 +68,21 @@ capture.output3(print(mtcars[3, ]))
 #'
 ## Do not modify this line!
 
-capture.output4 <- function(code,file=NULL){
-
-    if(is.null(file)) {
-    temp=tempfile(pattern="temp",fileext = "txt")
-    on.exit(sink(),add=TRUE,after=TRUE)
+capture.output4 <- function(code, file=NULL){
+  if (is.null(file)){
+    temp <- tempfile(pattern="temp", fileext = "txt")
+    on.exit(sink(), add=T, after=T)
+    sink(temp)
+    on.exit(file.remove(temp), add=T, after=T)
+    force(code)
+    readLines(temp)
+    
   }
   else{
-    temp=file
-  } 
-  on.exit(file.remove(temp),add=TRUE,after=TRUE)
-  sink(temp)
-  on.exit(sink(),add=TRUE,after=TRUE)
-  force(code)
-  readLines(temp) 
+    sink(file)
+    on.exit(sink(), add=T, after=T)
+    force(code)
+    readLines(file)
+  }
+  
 }
