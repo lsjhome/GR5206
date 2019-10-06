@@ -25,7 +25,24 @@
 #    before the calculation and a variable 'endtime' after the calculation. The duration of the calculation is `endtime-startime`.)
 ## Do not modify this line!
 
+fib <- function(n){
+  if (n<=1){
+    return (n)
+  }
+  else{
+    fib(n-1) + fib(n-2)
+  }
+}
 
+climb <- function(n)
+{
+  return (fib(n+1))
+}
+
+startime <- Sys.time()  
+climb(10)
+endtime <- Sys.time()
+time1 <- endtime - startime
 
 # 2. Write a function named `climb2()` to calculate the climbing stairs problem using the `memoise()` function.
 #    Report the running time for calculating `climb2(10)` in variable `time2`.
@@ -33,5 +50,13 @@
 #    before the calculation and a variable 'endtime' after the calculation. The duration of the calculation is `endtime-startime`.)
 ## Do not modify this line!
 
+library(memoise)
 
+climb2 <- memoise(climb)
+
+startime <- Sys.time()  
+climb2(10)
+endtime <- Sys.time()
+time2 <- endtime - startime
+time2
 
