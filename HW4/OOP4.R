@@ -49,12 +49,23 @@ author_example <- author(name='Susan Barker', email='susan.barker@mail.com')
 # and the input email address.
 ## Do not modify this line!
 
+get_name <- function(author_object){
+  author_object$name
+}
+get_email <- function(author_object){
+  author_object$email
+}
 
+change_email <- function(author_object, email) UseMethod('change_email')
+
+change_email.author <- function(author_object, email){
+  author(author_object$name, email)
+}
 
 # 4. Change the email address of `author_example` to `s.barker@mail.com`
 ## Do not modify this line!
 
-
+author_example <- change_email(author_example, 's.barker@mail.com')
 
 # 5. Create a method `print.author` that prints the string
 # `"Author <name>, e-mail: <email>"` where `<name>` and `<email>` are the
@@ -66,5 +77,7 @@ author_example <- author(name='Susan Barker', email='susan.barker@mail.com')
 #'
 ## Do not modify this line!
 
-
-
+print.author <- function(x,...){
+  print( paste0("Author ", x$name ,", e-mail: ", x$email))
+  invisible(x)
+}
