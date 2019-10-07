@@ -13,7 +13,16 @@
 # using `as.character` and `as.double`.
 ## Do not modify this line!
 
+new_shakeshack_order <- function(names, prices){
+  stopifnot(is.character(names) & is.double(prices))
+  structure(list(names=names, prices=prices), class='shakeshack_order')
+}
 
+shakeshack_order <- function(names, prices){
+  names <- as.character(names)
+  prices <- as.double(prices)
+  new_shakeshack_order(names, prices)
+}
 
 # 2. Write a new `sum(..., na.rm = FALSE)` method for the class `shakeshack_order` that
 # returns the sum of the prices in a given order. Note that:
@@ -34,7 +43,21 @@
 # (Hint: a nice solution could use a combination of `map` and `reduce`.)
 ## Do not modify this line!
 
+sum.shakeshack_order <- function(... , na.rm = F){
+  ls <- list(...)
+  if(length(ls) == 1){
+    return(sum(...$prices , na.rm = na.rm))
+  }
+  reduce( map(ls, 'prices') , sum , na.rm = na.rm)
+}
 
+sum.shakeshack_order <- function(..., na.rm=F){
+  order_list <- list(...)
+  if(length(ls)==1){
+    return (sum(...$prices, na.rm=na.rm))
+  }
+  return (reduce(map(order_list, 'prices'),  sum, na.rm = na.rm))
+}
 
 # 3. Write a new `print` method for the class `shakeshack_order` that prints
 # `"Your order is <names>. The total price is sum(<prices>)."` using `print`.
@@ -48,7 +71,13 @@
 #    body of `print.shakeshack_order`.
 ## Do not modify this line!
 
-
+print.shakeshack_order <- function(x,...){
+  print(paste0("Your order is " , 
+               paste0(x$names, collapse = ", "), 
+               ". The total price is $", 
+               sum(x$prices), "."))
+  invisible(x)
+}
 
 # 4. Now, you need to create a combine operator for the class `shakeshack_order`.
 # For example, `c(o, o2)` should equal
@@ -60,5 +89,7 @@
 #'
 ## Do not modify this line!
 
-
-
+c.shakeshack_order <- function(...){
+  order <-list(...)
+  new_shakeshack_order(unlist(map(order,"names")), unlist(map(order,"prices")))
+}
