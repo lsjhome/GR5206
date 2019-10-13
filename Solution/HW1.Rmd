@@ -1,0 +1,608 @@
+---
+title: "HW1"
+output: html_notebook
+---
+# Warm-up
+
+```{r}
+# HW1: warm-up
+#
+# 1. Create a vector `x` that will contain integers between 21 and 29 included.
+
+x <- 21:29
+
+# 2. Copy `x` row-wise into a 3 x 3 matrix `y`.
+
+y <- matrix(x, 3, 3, byrow = TRUE)
+
+# 3. Create a matrix `z` as the matrix square of `y` (hint: think about the difference between `^` and `%*%`).
+
+z <- y %*% y
+
+# 4. Change the row names of `z` and  the columns of `y` to `c("a", "b", "c")`.
+
+rownames(z) <- colnames(y) <- c("a", "b", "c")
+
+# 5. Assign the matrix product between the transpose of `z` and the entry-wise square of `y` to a new matrix called `w`.
+
+w <- t(z) %*% y^2
+
+```
+
+# Vector
+
+```{r}
+# 1. Create a vector `v1` that will contain integers from -30 to 60.
+
+v1 <- (-30):60
+
+# 2. Copy `v1` into a vector `v2` and add names 'odd' or 'even' based on the value.
+
+v2 <- v1
+names(v2) <- c(rep(c("even", "odd"), 45), "even")
+
+# 3. Copy `v1` into a vector `v3` and if the number can be divided by 3, replace it by 'NA'.
+
+v3 <- v1
+v3[v3 %% 3 == 0] <- NA
+
+# 4. Assign the mean of `v3` to `v4` ignoring the 'NA'.
+
+v4 <- mean(v3, na.rm = T)
+```
+
+# Matrix
+
+```{r}
+# HW1: matrix2
+#
+# 1. Create a 10 x 10 matrix `m1` whose i-th row,j-th column element is (i+1)/(j+1). (hint: check the `outer`` function)
+
+i <- 1:10
+j <- 1:10
+myop <- function(x, y){
+  return ((x+1) / (y+1))
+  
+}
+m1 = outer(i, j, FUN = myop)
+# m1 <- outer(2:11, 2:11, FUN = "/")
+
+# 2. Copy `m1` into a matrix `m2` and replace the non-integer value by 0.
+
+m2 <- m1
+m2[m2 %% 1 != 0] <- 0
+
+# 3. Flatten the matrix `m2` row-vise and assign it to `v1`.
+
+v1 <- as.vector(t(m2))
+
+# 4. Copy `v1` to `v2`, remove the duplicated value and sort it in decreasing order. (hint: check the `unique` function)
+
+v2 <- unique(v1)
+v2 <- sort(v2, decreasing = T)
+
+```
+
+# Matrix 2
+
+```{r}
+# HW1: matrix3
+#
+# 1. Set the random seed as 5206. (hint: check the set.seed function)
+#    Save the random seed vector to `seed`.(hint: use the command seed <- .Random.seed)
+
+set.seed(5206)
+seed <- .Random.seed
+
+# 2. Create a vector `v1` of length 30 by sampling from 1 to 30 without replacement.(hint: check the sample function)
+
+v1 <- sample(1:30, 30)
+
+# 3. Convert the vector `v1` into a 5 x 6 matrix `m1` filled by row.
+
+m1 <- matrix(v1, nrow = 5, byrow = T)
+
+# 4. Calculate the L-1 norm of matrix `m1` defined as the the maximum absolute column sum of the matrix and assign it to `n1`.
+
+# n1 <- max(colSums(abs(m1)))
+n1 <- norm(m1, 'O')
+
+# 5. Calculate the L-infinity norm of matrix `m1` defined as the maximum absolute row sum of the matrix and assign it to `n2`.
+
+# n2 <- max(rowSums(abs(m1)))
+n2 <- norm(m1, "i")
+
+# 6. Calculate the Frobenius norm of matrix `m1` defined as the square root of the sum of the squares of its elements and assign it to `n3`.
+
+# n3 <- sqrt(sum(m1^2))
+n3 <- norm(m1, 'f')
+```
+
+# Matrix 3
+
+```{r}
+# HW1: outer product
+#
+# 1. Create vector `v` containing numbers 1 to 7.
+
+library(tibble)
+v <- 1:7
+
+# 2. Create matrix `outer_prod1` which is the outer product of `v`.
+
+outer_prod1 <- outer(v, v)
+
+# 3. Copy `outer_prod1` to `outer_prod2` and change the sign of the lower triangular part of `outer_prod2` from + to -.
+
+outer_prod2 <- outer_prod1
+outer_prod2[lower.tri(outer_prod2)] <- -outer_prod2[lower.tri(outer_prod2)]
+
+# 4. Convert `outer_prod2` to a tibble `t1`.
+
+t1 <- as_tibble(outer_prod2)
+
+# 5. Rename columns of `t1` as the first 7 letters of the alphabet.
+
+names(t1) <- letters[1:7]
+
+# 6. Copy `t1` into `t2` and remove the columns 'd' of `t2`.
+
+t2 <- t1
+t2[, "d"] <- NULL
+
+```
+
+# Matrix 4
+
+```{r}
+# HW1: linear algebra
+#
+# 1. Assign to `a` a 3x3 matrix filled by row with numbers between 1 and 9.
+
+a <- matrix(1:9, 3, 3, byrow = TRUE)
+
+# 2. Assign to `ca` the matrix corresponding to the upper triangulart of the cholesky decomposition of `a`.
+# In other words, find `ca` such that `t(ca) %*% ca = a`. (hint: look at the function `chol`)
+
+ca <- chol(a, pivot = TRUE)
+ca <- ca[, order(attr(ca, "pivot"))]
+
+# 3. Assign to `eva` the first eigenvector of `a`. (hint: look at the function `eigen`)
+
+eva <- eigen(a)$vectors[, 1]
+
+# 4. Assign to `iea` the inverse of the matrix composed of the eigenvectors of `a` (hint: look at the function `solve`)
+
+iea <- solve(eigen(a)$vectors)
+
+# 5. Assign to `ra` the rank of `a`. (hint: look at the function `qr`)
+
+ra <- qr(a)$rank
+
+```
+
+# Tibble
+
+```{r}
+# HW1: tibble4
+#
+# 1. Consider the data frame `airquality`. Convert it into a tibble `t1`.
+
+library(tibble)
+t1 <- as_tibble(airquality)
+
+# 2. Calculate the total number of 'NA' for each variable and summarize it into a vector `v1`.
+#    Make sure the vector has the same names as the column names of `t1`.
+
+v1 <- colSums(is.na(t1))
+
+# 3. Omit all rows which have 'NA' values and assign it to `t2`.
+
+t2 <- na.omit(t1)
+
+# 4. Sort the new data frame `t2` by column Temp(ascending) and then by column Ozone(ascending). Assign it to `t3`.(hint: check the order function)
+
+t3 <- t2[order(t2$Temp, t2$Ozone), ]
+
+```
+
+# Tibble 2
+
+```{r}
+# 1. Convert the dataset `mtcars` to a tibble `t1`.
+
+library(tibble)
+t1 <- as_tibble(mtcars)
+
+# 2. Create a tibble `t2` which contains all columns of `t1` with a miles per gallon higher than 18.
+
+t2 <- t1[t1$mpg > 18, ]
+
+# 3. Create a tibble `t3` that contains all the values of `t2` truncated to the corresponding integer.
+
+# list apply
+# t2를 정수로 바꿔서 t3에 넣어라는 뜻
+t3 <- as_tibble(lapply(t2, as.integer))
+
+# 4. Copy `t3` into a tibble `t4` and merge its two columns 'vs' and 'am' by summing them, rename it 'vsam' and make sure it is `t4`'s first column.
+
+t4 <- t3
+t4$vsam <- t4$vs + t4$am
+t4 <- t4[, c("vsam", names(t4)[1:ncol(t4) - 1])]
+```
+
+# Tibble 3
+
+```{r}
+# 1. Convert the dataset `mtcars` to a tibble `t1`.
+
+library(tibble)
+t1 <- as_tibble(mtcars)
+
+# 2. Copy `t1` into a tibble `t2` and delete the columns 'drat' and 'am'.
+
+library(dplyr)
+t2 <- select(t1, -c('drat', 'am'))
+
+t2$drat <- NULL
+t2$am <- NULL
+
+# 3. Copy `t2` into a tibble `t3` and permute the column 'mpg' and 'qsec' (hint : you might want to use the function `which`).
+
+# t3 <- t2[c(6, 2, 3, 4, 5, 1, 7, 8, 9)]
+
+t3 <- t2
+t3[, c("mpg", "qsec")] <- t2[, c("qsec", "mpg")]
+names(t3)[which(names(t3) == "qsec")] <- "mpg"
+names(t3)[1] <- "qsec"
+
+# 4. Select the 10 rows of `t3` with lowest 'qsec' and copy them into a tibble `t4` in increasing order.
+
+t4 <- t3[order(t3$qsec), ]
+t4 <- t4[1:10, ]
+
+```
+
+# Arrays
+
+```{r}
+# HW1: array5
+#
+# 1. Create a 10 x 10 matrix `m1` such that the i-th row j-th column element is the max(i,j).
+
+m1 <- outer(1:10, 1:10, FUN = "pmax")
+
+# 2. Create a 10 x 10 matrix `m2` such that the i-th row j-th column element is the min(i,j).
+
+m2 <- outer(1:10, 1:10, FUN = "pmin")
+
+# 3. Combine `m1` as the first slice and `m2` as the second slice to a 10 x 10 x 2 array `a1`.
+
+a1 <- array(c(m1, m2), dim = c(10, 10, 2))
+
+# 4. Turn the array `a1` into a 10 x 2 matrix `m3` by summing over the second dimension.
+#   (hint: you can calculate directly from `m1` and `m2` or use the function apply)
+
+m3 <- apply(a1, MARGIN = c(1, 3), sum)
+#m3 <- colSums(a1)
+```
+
+# List
+
+```{r}
+# HW1: list6
+#
+# 1. Create a list `l1` consist of 26 components from 'a' to 'z'. (hint: check the variable letters)
+
+l1 <- as.list(letters)
+
+# 2. Create a list `l2` consist of 26 components from 1 to 26.
+
+l2 <- as.list(1:26)
+
+# 3. Combine `l1` and `l2` to a new list `l3`. `l3` has 2 elements as `l1` and `l2`.
+
+l3 <- list(l1, l2)
+
+# 4. Combine `l1` and `l2` to a new list `l4`. `l4` has 52 elements as the elements of `l1` and `l2`.
+
+l4 <- c(l1, l2)
+
+```
+
+# List 2
+
+```{r}
+# 1. Create a list `l1` consist of 52 components from 'a' to 'z' and 'A' to 'Z'. (hint: check variables letters and LETTERS)
+
+l1 <- as.list(c(letters, LETTERS))
+
+# 2. Convert the list `l1` into a 13 x 4 matrix `l2` filling by column.
+
+l2 <- matrix(l1, nrow = 13, ncol = 4, byrow =FALSE)
+
+l2_list <- l1
+dim(l2_list) <- c(13, 4)
+l2_char <- matrix(unlist(l1), 13, 4)
+
+
+# 3. Convert the list `l1` into a vector `x1`.
+
+x1 <- l1
+
+# x1 <- as.vector(l1)
+
+# 4. Convert the list `l1` into an atomic vector `x2`. (hint: `x1` should be different with `x2`)
+
+x2 <- unlist(l1)
+
+```
+
+# Factors
+
+```{r}
+# HW1: factor8
+#
+# 1. Create an ordered factor `f1` consist of letters 'a' to 'z' ordered alphabetically.
+
+f1 <- ordered(letters)
+
+# 2. Create an ordered factor `f2` consist of letters 'a' to 'z' in descending alphabetical order.
+
+f2 <- ordered(letters, levels = rev(letters))
+
+# 3. Create a 30 elements, ordered factor `f3` consist of letters 'a' to 'z' followed by 4 NA. The order of `f3` is 'a'<...<'z'<NA.
+
+f3 <- ordered(c(letters, rep(NA, 4)), levels = c(letters, NA), exclude = NULL)
+# f3 <- ordered(c(letters, rep(NA, 4)), levels = c(letters, NA), exclude = F)
+
+# 4. Delete the element 'c' with the level 'c' and assign it to `f4`.
+
+f4 <- f3[-3]
+f4 <- droplevels(f4)
+# f4 <- f3[-3, drop=TRUE]
+```
+
+# Factors 2
+
+```{r}
+# HW1: factors
+#
+# 1. Create two factors `f1` and `f2` containing the numbers from 1 to 100 included, and 1 to 20 included.
+
+f1 <- factor(1:100)
+f2 <- factor(1:20)
+
+# 2. Concatenate these two factors in a factor `f3`.
+
+f3 <- factor(c(f1, f2))
+
+# 3. Create a table `t1` giving the number of times each number appear in `f3`.
+
+t1 <- table(f3)
+
+# 4. Copy `f1` into a factor `f4` and rearrange it in decreasing order. (hint: make sure its levels are in decreased order too. You might want to look up the function `rev()`)
+
+f4 <- f1
+levels(f4) <- rev(levels(f4))
+# f4 <- factor(rev(f1), levels = rev(levels(f1)))
+```
+
+# Missing Values
+
+```{r}
+# HW1: missing values
+#
+# 1. Set the random seed to zero (The code won't pass the test if you don't!) and save the random seed vector to `seed`. (hint: use the command `seed <- .Random.seed`).
+
+set.seed(0)
+seed <- .Random.seed
+
+# 2. Load `mtcars` and transform it into a tibble called `mtcars_tibble`.
+
+library(tibble)
+mtcars_tibble <- as_tibble(mtcars)
+
+# 3. Select randomly 1 row and 5 columns and store their corresponding numbers into two vectors `list_row` (containing 1 number) and `list_col` (containing 5 numbers). (hint: look at the command `sample`)
+
+list_row <- sample(nrow(mtcars_tibble), 1)
+list_col <- sample(ncol(mtcars_tibble), 5)
+
+# 4. Copy `mtcars_tibble` into `mtcars_tibble_missing` and replace its corresponding values by missing values.
+
+mtcars_tibble_missing <- mtcars_tibble
+mtcars_tibble_missing[list_row, list_col] <- NA
+
+# 5. Create a vector `mean_mtcars` containing the means of each column of `mtcars_tibble`.
+
+mean_mtcars <- as.vector(apply(mtcars_tibble, MARGIN = 2, mean, na.rm = TRUE))
+
+# 6. Copy `mtcars_tibble_missing` into `mtcars_bis` and replace the missing values of `mtcars_bis` by the means of the corresponding columns.
+
+mtcars_bis <- mtcars_tibble
+mtcars_bis[list_row, list_col] <- mean_mtcars[list_col]
+
+# 7. Copy `mtcars_bis` into a tibble `mtcars_rounded` and make sure that its column 'gear' contains only integers by rounding its values to the closest integer.
+
+mtcars_rounded <- mtcars_bis
+mtcars_rounded$gear <- round(mtcars_rounded$gear)
+
+```
+
+# Type Conversion
+
+```{r}
+# HW1: type_conversions
+#
+# 1. Create a list `l` containing :
+#       - a vector containing the first 20 numbers in increasing order,
+#       - a vector containing the first 20 numbers in decreasing order,
+#       - a list of 2 'a' and 2 'b' repeated 5 times (hint : lookup the function `rep()`).
+
+l <- list(1:20, 20:1, rep(c("a", "a", "b", "b"), 5))
+
+# 2. Convert `l` to a tibble t1 of dimension 20 x 3
+
+library(tibble)
+t1 <- tibble(l[[1]], l[[2]], l[[3]])
+# t1 <- as_tibble(l, .name_repair ='minimal')
+
+# 3. Rename the columns of the tibble `t1` to ('X1', 'X2', 'letters').
+
+names(t1) <- c('X1', 'X2', 'letters')
+
+# 4. Copy `t1` into a tibble `t2` and delete the rows of `t2` with letter 'b'.
+
+t2 <- t1
+t2 <- t2[!(t2$letters == 'b'), ]
+
+# 5. Create a matrix `m` containing the first two columns of `t2`
+
+m <- data.matrix(t2[1:2])
+#m <- as.matrix(t2[c('X1', 'X2')])
+
+# 6. Compute the product `m_prod` of `m` and its transpose.
+
+m_prod <- m %*% t(m)
+```
+
+# Sampling
+
+```{r}
+# HW1: random order
+#
+# 1. Set the random seed to zero and save the random seed vector to `seed`. (hint: use the command `seed <- .Random.seed`).
+
+set.seed(0)
+seed <- .Random.seed
+
+# 2. Create a vector `random_seq` of 200 random numbers, selected between 1 and 10 included.
+
+random_seq <- as.vector(sample(1:10, 200, replace = TRUE))
+
+# 3. Create a factor `random_factor` containing the sequence and the corresponding levels 1 to 10.
+
+random_factor <- factor(random_seq, levels = 1:10)
+
+# 4. Create a table `tab` that gives the number of appearance of each number in the sequence.
+
+tab <- table(random_factor)
+
+# 5. Create a vector `random_order` containing the numbers 1 to 10 in increasing number of appearance in `random_seq`.
+
+random_order <- 1:10
+random_order <- as.vector(random_order[order(tab)])
+# random_order <- as.integer(names(sort(tab)))
+
+# 6. Create a vector `top3` containing the 3 numbers appearing the most often in decreasing order.
+
+top3 <- as.vector(random_order[10:8])
+# top3 <- rev(random_order)[1:3]
+
+```
+
+# Sampling 2
+
+```{r}
+# HW1: simple probabilities
+#
+# Estimate the probability to have 5 'heads' in a row
+#
+# 1. Set the random seed to zero and save the random seed vector to `seed`. (hint: use the command `seed <- .Random.seed`).
+
+set.seed(0)
+seed <- .Random.seed
+
+# 2. Create a vector `random_seq` of n = 50000 random numbers equal to 0 ('heads') or 1 ('tails').
+
+random_seq <- as.vector(sample(0:1, 50000, replace = TRUE))
+
+# 3. Reshape `random_seq` into a matrice `random_mat` of shape 5 x 10000.
+
+random_mat <- matrix(random_seq, nrow = 5)
+
+# 4. Sum `random_mat` over its rows, to get a vector `random_sum`. (hint : check the functions `rowSums` and `colSums`).
+
+random_sum <- as.vector(colSums(random_mat))
+
+# 5. Assign to a variable `prob` the number of elements of `random_sum` equal to 0 and divide it by 10000. You get an estimate of the probability of having 5 heads in a row!
+#    For higher n, you will get even better estimates. Try different values of n to see how prob evolves, but make sure that your final solution uses 50000.
+
+prob <- length(random_sum[random_sum == 0]) / length(random_sum)
+# prob <- sum(random_sum == 0) / 10000
+
+```
+
+# Sampling 3
+
+```{r}
+# HW1: sampling
+#
+# In this exercise, you'll compute the probability of getting a double six exactly three times in a row when throwing consecutive six faced dices.
+# While it could be solved by hand, the goal is to learn how to use sampling.
+#
+# 1. Set the random seed to zero and save the random seed vector to `seed`. (hint: use the command `seed <- .Random.seed`).
+
+set.seed(0)
+seed <- .Random.seed
+
+# 2. Assign to `sample_space` a data frame with 36 rows and columns named `dice1` and `dice2`.
+
+# Each row should contain a different combination of the results for the two dices, e.g. the first row is (1, 1), the second row is (2, 1), ... up to (6, 6).
+# (Hint: look at the function `expand.grid`)
+
+sample_space <- expand.grid(dice1 = 1:6, dice2 = 1:6)
+
+# 3. Assign to `sampled_rows` a vector of 100'000 uniformly sampled numbers between 1 and 36.
+# (Hint: look at the functions `sample` and  `sample.int`)
+
+sampled_rows <- sample.int(36, 1e5, replace = TRUE)
+
+# 4. Assign to `sampled_events` the data frame obtained by selecting the 100'000 rows in `sampled_rows` from the `sample_space` data frame.
+
+sampled_events <- sample_space[sampled_rows, ]
+
+# 5. Assign to `double_six` a `logical` vector of dimension 100'000 where each element is `TRUE`
+# if the corresonding row of `sampled_events` is a double six and `FALSE` otherwise.
+
+double_six <- sampled_events$dice1 == 6 & sampled_events$dice2 == 6
+
+# 6. Assign to `double_six_run_length` an `integer` vector corresponding to the length of each run of double six.
+# (Hint: look at the function `rle`)
+?rle
+double_six_run_length <- rle(double_six)$length[rle(double_six)$values]
+
+# 7. Assign to `probability` the probability to obtain a double six exactly two times in a row
+# by counting the number of times such an event happens in `double_six` and dividing by 100'000.
+
+probability <- sum(double_six_run_length == 2) / 1e5
+# probability <- length(double_six_run_length[double_six_run_length == 2]) / 100000
+
+```
+
+# Distributions
+
+```{r}
+# HW1: distributions
+#
+# In this exercise, you'll learn how to work with distributions in R.
+#
+# 0. Read the documentation regarding distributions, which you can access using `?Distributions`.
+# 1. Set the random seed to zero and save the random seed vector to `seed`. (hint: use the command `seed <- .Random.seed`).
+
+set.seed(0)
+seed <- .Random.seed
+
+# 2. Assign to a variable `prob1` the probability that 5 students in the class have the same birthday. (hint: as of the writing of this exercise, there are 285 registered students)
+
+prob1 <- pbirthday(285, 365, 5)
+
+# 3. Let X have a normal distribution with a mean of 0 and a variance of 2. Assign to a variable `prob2` the probability that X is betwee 0 and 3.
+
+prob2 <- pnorm(3, mean=0, sd=sqrt(2)) - pnorm(0, mean=0, sd=sqrt(2))
+
+# 4. Let Y have an exponential distribution with mean equal to 3. Assign to `sample_exp` a sample of 10 random variates drawn from the distribution of Y.
+
+sample_exp <- rexp(10, rate=1/3)
+
+```

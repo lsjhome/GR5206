@@ -57,12 +57,10 @@ new_rectangle <- function(x, l, w) {
 }
 rectangle <- function (x, l, w) new_rectangle(x, l, w)
 
-
 # 5. Write a new method `area` for the class `rectangle` that prints `My area is <area>.` using `print`.
 #    The `<area>` should be substituted by the area of a rectangle of length `length` and width `width`.
 #    Use `attr()` to access these two parameters.
 ## Do not modify this line!
-
 
 area.rectangle <- function(x){
   l <- attr(x, 'length')
