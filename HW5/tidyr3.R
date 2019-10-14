@@ -91,4 +91,4 @@ t3 <- t1 %>%
 ## Do not modify this line!
 
 t4 <- t3 %>% 
-  pivot_longer(cols=c(L, M, H), names_to="tension", values_to = "sum_of_breaks")
+  pivot_longer(cols=c(L, M, H), names_to="tension", values_to = "sum_of_breaks")g
